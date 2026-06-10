@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - uat
 
 jobs:
   docker:
@@ -28,4 +27,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: vynn122/macer-keyboard:latest
+          tags: vynnn/macer-keyboard:latest

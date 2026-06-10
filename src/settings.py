@@ -155,9 +155,7 @@ USE_TZ = True
 # MEDIA_ROOT = BASE_DIR 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "keyboardApp/static",
-]
+STATICFILES_DIRS = []
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 CLOUDINARY_STORAGE = {

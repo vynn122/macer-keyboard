@@ -13,7 +13,7 @@ const handleSubmitReview = async (itemId, transactionId) => {
 
   try {
     let fetchUserResp = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/auth/validation"
+      `${baseUrl}/api/keyboardApp/auth/validation`,
     );
     if (fetchUserResp.ok && fetchUserResp.status === 200) {
       let respData = await fetchUserResp.json();
@@ -42,23 +42,20 @@ const handleSubmitReview = async (itemId, transactionId) => {
     console.log(selectedUserId);
     console.log(selectedRateTem);
 
-    let submitReview = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/submit_review",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken(),
-        },
-        body: JSON.stringify({
-          userId: selectedUserId,
-          storeItemId: itemId,
-          rating: selectedRateTem,
-          reviewText: userReview,
-          txId: transactionId,
-        }),
-      }
-    );
+    let submitReview = await fetch(`${baseUrl}/api/keyboardApp/submit_review`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken(),
+      },
+      body: JSON.stringify({
+        userId: selectedUserId,
+        storeItemId: itemId,
+        rating: selectedRateTem,
+        reviewText: userReview,
+        txId: transactionId,
+      }),
+    });
     if (submitReview.ok && submitReview.status === 200) {
       let respMessage = await submitReview.json();
       //   alert(respMessage["Message"]);
@@ -93,7 +90,7 @@ const renderHistory = async () => {
   let queriedTransaction;
   try {
     let userTransactionResp = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/retrieve-transaction"
+      `${baseUrl}/api/keyboardApp/retrieve-transaction`,
     );
     if (userTransactionResp.ok && userTransactionResp.status === 200) {
       let data = await userTransactionResp.json();

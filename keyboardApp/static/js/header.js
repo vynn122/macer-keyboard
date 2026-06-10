@@ -7,6 +7,8 @@ let dialogLoginBtnEle = document.getElementById("dialog-login-btn-id");
 let dialogSignupBtnEle = document.getElementById("dialog-signup-btn-id");
 let dialogLogoutBtnEle = document.getElementById("dialog-logout-btn-id");
 let userNicknameTextEle = document.getElementById("usernickname-text-id");
+// let baseUrl = "http://localhost:8000";
+let baseUrl = window.location.origin;
 
 switch (window.location.pathname) {
   case "/keyboardApp/home":
@@ -52,10 +54,10 @@ const handleToggleMenu = () => {
   console.log("THIS HAS BEEN TRIGGERED");
   let menuEle = document.getElementById("header-dialog-main-con-id");
   let menuHoverBoard = document.getElementById(
-    "header-menu-icon-hoverboard-id"
+    "header-menu-icon-hoverboard-id",
   );
   let menuChildEle = document.querySelectorAll(
-    ".header-navbar-custom-burger-icon-element"
+    ".header-navbar-custom-burger-icon-element",
   );
   console.log(menuChildEle[0].className);
   let pizzaIcon = document.getElementById("pizza-icon-id");
@@ -75,65 +77,143 @@ const handleToggleMenu = () => {
     }
   });
 };
-
 const handleQueryData = async () => {
   let userNicknameTextEle = document.getElementById("usernickname-text-id");
   let userDialogNicknameTextELe = document.getElementById(
-    "dialog-usernickname-text-id"
+    "dialog-usernickname-text-id",
   );
   let userDialogUsernameTextEle = document.getElementById(
-    "dialog-username-text-id"
+    "dialog-username-text-id",
   );
   let userDialogBalanceTextEle = document.getElementById(
-    "dialog-balance-text-id"
+    "dialog-balance-text-id",
   );
+
   try {
-    console.log("ABOUT TO START");
-    const resp = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/auth/validation",
-      {
-        method: "GET",
-        credentials: "same-origin",
-      }
-    );
-    if (resp.status !== 200) {
-      throw new Error("failed to validate the user");
+    const resp = await fetch(`${baseUrl}/api/keyboardApp/auth/validation`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    // Guest user
+    if (resp.status === 401) {
+      loginBtnEle.style.display = "flex";
+      signupBtnEle.style.display = "flex";
+
+      logoutBtnEle.style.display = "none";
+
+      dialogLoginBtnEle.style.display = "flex";
+      dialogSignupBtnEle.style.display = "flex";
+
+      dialogLogoutBtnEle.style.display = "none";
+
+      return;
     }
+
+    if (!resp.ok) {
+      throw new Error("Failed to validate user");
+    }
+
+    const userData = await resp.json();
 
     const userBalanceResp = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/retrieve-user-balance"
+      `${baseUrl}/api/keyboardApp/retrieve-user-balance`,
+      {
+        credentials: "include",
+      },
     );
-    let userBalance;
-    if (userBalanceResp.ok && userBalanceResp.status === 200) {
-      userBalance = await userBalanceResp.json();
-    }
 
-    userData = await resp.json();
+    let userBalance = 0;
+
+    if (userBalanceResp.ok) {
+      const balanceData = await userBalanceResp.json();
+      userBalance = balanceData.item_data?.[0] || 0;
+    }
 
     userNicknameTextEle.innerText = userData.Data.user_nickname;
     userDialogNicknameTextELe.innerText = userData.Data.user_nickname;
-    userDialogBalanceTextEle.innerText = userBalance.item_data[0] + " $";
     userDialogUsernameTextEle.innerText = userData.Data.user_name;
+    userDialogBalanceTextEle.innerText = userBalance + " $";
+
     logoutBtnEle.style.display = "flex";
     loginBtnEle.style.display = "none";
     signupBtnEle.style.display = "none";
+
     dialogLogoutBtnEle.style.display = "flex";
     dialogLoginBtnEle.style.display = "none";
     dialogSignupBtnEle.style.display = "none";
+
     return userData.Data;
   } catch (err) {
-    console.log("IT ERROR");
-    // alert("Please login to use locked feature");
-    console.log(err);
+    console.error(err);
+
     loginBtnEle.style.display = "flex";
     signupBtnEle.style.display = "flex";
+
     logoutBtnEle.style.display = "none";
+
     dialogLoginBtnEle.style.display = "flex";
     dialogSignupBtnEle.style.display = "flex";
+
     dialogLogoutBtnEle.style.display = "none";
-    return;
   }
 };
+
+// const handleQueryData = async () => {
+//   let userNicknameTextEle = document.getElementById("usernickname-text-id");
+//   let userDialogNicknameTextELe = document.getElementById(
+//     "dialog-usernickname-text-id",
+//   );
+//   let userDialogUsernameTextEle = document.getElementById(
+//     "dialog-username-text-id",
+//   );
+//   let userDialogBalanceTextEle = document.getElementById(
+//     "dialog-balance-text-id",
+//   );
+//   try {
+//     console.log("ABOUT TO START");
+//     const resp = await fetch(`${baseUrl}/api/keyboardApp/auth/validation`, {
+//       method: "GET",
+//       credentials: "same-origin",
+//     });
+//     if (resp.status !== 200) {
+//       throw new Error("failed to validate the user");
+//     }
+
+//     const userBalanceResp = await fetch(
+//       `${baseUrl}/api/keyboardApp/retrieve-user-balance`,
+//     );
+//     let userBalance;
+//     if (userBalanceResp.ok && userBalanceResp.status === 200) {
+//       userBalance = await userBalanceResp.json();
+//     }
+
+//     userData = await resp.json();
+
+//     userNicknameTextEle.innerText = userData.Data.user_nickname;
+//     userDialogNicknameTextELe.innerText = userData.Data.user_nickname;
+//     userDialogBalanceTextEle.innerText = userBalance.item_data[0] + " $";
+//     userDialogUsernameTextEle.innerText = userData.Data.user_name;
+//     logoutBtnEle.style.display = "flex";
+//     loginBtnEle.style.display = "none";
+//     signupBtnEle.style.display = "none";
+//     dialogLogoutBtnEle.style.display = "flex";
+//     dialogLoginBtnEle.style.display = "none";
+//     dialogSignupBtnEle.style.display = "none";
+//     return userData.Data;
+//   } catch (err) {
+//     console.log("IT ERROR");
+//     // alert("Please login to use locked feature");
+//     console.log(err);
+//     loginBtnEle.style.display = "flex";
+//     signupBtnEle.style.display = "flex";
+//     logoutBtnEle.style.display = "none";
+//     dialogLoginBtnEle.style.display = "flex";
+//     dialogSignupBtnEle.style.display = "flex";
+//     dialogLogoutBtnEle.style.display = "none";
+//     return;
+//   }
+// };
 handleQueryData();
 
 // const handleLogout = async () => {
@@ -163,10 +243,9 @@ const handleLogout = () => {
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
-        let logoutResp = await fetch(
-          "http://127.0.0.1:8000/api/keyboardApp/auth/logout",
-          { credentials: "same-origin" }
-        );
+        let logoutResp = await fetch(`${baseUrl}/api/keyboardApp/auth/logout`, {
+          credentials: "same-origin",
+        });
         Swal.fire({
           icon: "success",
           title: "Logged out",
@@ -192,7 +271,11 @@ const handleRoute = async (route) => {
   if (route === "history") {
     try {
       let fetchUserResp = await fetch(
-        "http://127.0.0.1:8000/api/keyboardApp/auth/validation"
+        `${baseUrl}/api/keyboardApp/auth/validation`,
+        {
+          method: "GET",
+          credentials: "same-origin",
+        },
       );
       if (!fetchUserResp.ok || fetchUserResp.status !== 200) {
         // throw new Error(

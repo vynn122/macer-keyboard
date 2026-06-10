@@ -18,7 +18,7 @@ def user_transaction(request: HttpRequest):
     request_data = json.loads(request.body)
     jwt_payload = getattr(request, "user_info")
 
-    sql_statement = "INSERT INTO keyboardApp_transaction (transaction_user_id, item_id, transaction_date, reviewed_flag) VALUES "
+    sql_statement = 'INSERT INTO "keyboardApp_transaction" (transaction_user_id, item_id, transaction_date, reviewed_flag) VALUES '
 
     # NOTE: This code below is trying to get the transaction price to do another validation based on item that been sent
     #       So it not accurate as we also have discount, by this we don't do total price from backend, we do it from frontend
@@ -28,7 +28,7 @@ def user_transaction(request: HttpRequest):
 
 
     try:
-        user_balance_query = User_info.objects.raw("SELECT * FROM keyboardApp_user_info WHERE user_id=%s", [jwt_payload["user_id"]])
+        user_balance_query = User_info.objects.raw('SELECT * FROM "keyboardApp_user_info" WHERE user_id=%s', [jwt_payload["user_id"]])
         user_balance = float(user_balance_query[0].user_balance)
         if user_balance < transaction_price:
             return JsonResponse({"Error_Message": "Insufficient balance"}, status=400)
@@ -60,7 +60,7 @@ def user_transaction(request: HttpRequest):
                 transaction.rollback()
                 raise SystemError("row affected are weird")
             
-            db_cursor.execute("UPDATE keyboardApp_user_info SET user_balance = %s WHERE user_id = %s", [user_balance, jwt_payload["user_id"]])
+            db_cursor.execute('UPDATE "keyboardApp_user_info" SET user_balance = %s WHERE user_id = %s', [user_balance, jwt_payload["user_id"]])
             if db_cursor.rowcount != 1:
                 transaction.rollback()
                 raise SystemError("row affected are weird")
@@ -82,7 +82,7 @@ def retrieve_item_info(request):
             item_json_format.append(i.tojson())
         return JsonResponse({"item_data": item_json_format})
     except Exception as err:
-        return JsonResponse({"Error_Message": "something went wrong", "Dev_Message": err})
+        return JsonResponse({"Error_Message": "something went wrong", "Dev_Message": str(err)}, status=500)
 
 
 @require_http_methods(["POST", "OPTIONS"])
@@ -92,19 +92,19 @@ def retrieve_item_with_brand(request: HttpRequest):
         data_list = []
         if not request_data["brandName"]:
             return JsonResponse({"Error_Message": "failed to query data, Please make sure you include brand name"}, status=400)
-        queried_data = Store_item.objects.raw("SELECT * FROM keyboardApp_store_item WHERE item_brand = %s", [request_data["brandName"]])
+        queried_data = Store_item.objects.raw('SELECT * FROM "keyboardApp_store_item" WHERE item_brand = %s', [request_data["brandName"]])
         for queried_data_element in queried_data:
             data_list.append(queried_data_element.tojson())
         return JsonResponse({"item_data": data_list})
     except Exception as e:
-        return JsonResponse({"Error_Message": "failed to query data, Please make sure you include brand name", "Dev_Message": e}, status=500)
+        return JsonResponse({"Error_Message": "failed to query data, Please make sure you include brand name", "Dev_Message": str(e)}, status=500)
 
 @require_http_methods(["POST", "OPTIONS"])
 @Cookie_validation_middleware  
 def retrieve_discount(request: HttpRequest):
     try:
         req_body = json.loads(request.body)
-        queried_discount = Discount_code.objects.raw("SELECT * FROM keyboardApp_discount_code WHERE code = %s", [req_body["discountCode"]])
+        queried_discount = Discount_code.objects.raw('SELECT * FROM "keyboardApp_discount_code" WHERE code = %s', [req_body["discountCode"]])
         for queried_element in queried_discount:
             if queried_element.to_json():
                 print(queried_element.to_json())
@@ -116,7 +116,7 @@ def retrieve_discount(request: HttpRequest):
                 raise Exception("failed to query discount from server")
         return JsonResponse({"Error_Message": "discount code not found"}, status=404)
     except Exception as e:
-        return JsonResponse({"Error_Message": e})
+        return JsonResponse({"Error_Message": str(e)}, status=500)
 
 @require_http_methods(["POST", "OPTIONS"])
 @Cookie_validation_middleware  
@@ -132,13 +132,13 @@ def submit_review(request: HttpRequest):
     try:
         with connections["keyboardAppDB"].cursor() as con:
             transaction.set_autocommit(False)
-            con.execute("INSERT INTO keyboardApp_reviews (user_id_id, store_item_id_id, rating, review_text, created_at) VALUES (%s, %s, %s, %s, %s)", 
+            con.execute('INSERT INTO "keyboardApp_reviews" (user_id_id, store_item_id_id, rating, review_text, created_at) VALUES (%s, %s, %s, %s, %s)', 
                         [req_body["userId"], req_body["storeItemId"], req_body["rating"], req_body["reviewText"], timezone.localtime(timezone.now())])
             if con.rowcount != 1:
                 transaction.rollback()
                 raise Exception("unexpected review insert row affected")
             print("About to update")
-            con.execute("UPDATE keyboardApp_transaction SET reviewed_flag = 1 WHERE transaction_id = %s", [req_body["txId"]])
+            con.execute('UPDATE "keyboardApp_transaction" SET reviewed_flag = 1 WHERE transaction_id = %s', [req_body["txId"]])
             if con.rowcount != 1:
                 transaction.rollback()
                 raise Exception("unexpected tx updation row affected")
@@ -168,7 +168,7 @@ def retrieve_user_balance(request: HttpRequest):
     try:
         with connections["keyboardAppDB"].cursor() as con:
             
-            con.execute("SELECT user_balance FROM keyboardApp_user_info WHERE user_id = %s", [jwt_payload["user_id"]])
+            con.execute('SELECT user_balance FROM "keyboardApp_user_info" WHERE user_id = %s', [jwt_payload["user_id"]])
             user_balance = con.fetchone()
             if user_balance == None:
                 raise Exception("no queried data found")
@@ -180,7 +180,7 @@ def retrieve_user_balance(request: HttpRequest):
 def retrieve_user_transaction(request: HttpRequest):
     jwt_payload = getattr(request, "user_info")
     try:
-        queried_transaction = Transaction.objects.raw("SELECT * FROM keyboardApp_transaction WHERE transaction_user_id = %s ORDER BY transaction_date DESC", [jwt_payload["user_id"]])
+        queried_transaction = Transaction.objects.raw('SELECT * FROM "keyboardApp_transaction" WHERE transaction_user_id = %s ORDER BY transaction_date DESC', [jwt_payload["user_id"]])
         
         transactionCollection = []
         for user_transaction in queried_transaction:

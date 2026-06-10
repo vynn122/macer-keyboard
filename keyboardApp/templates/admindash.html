@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -484,7 +484,10 @@
           <button
             type="submit"
             class="btn btn-primary"
-            onclick="document.getElementById('currentImagePreview').style.display = 'none';"
+            onclick="
+              document.getElementById('currentImagePreview').style.display =
+                'none'
+            "
           >
             <i class="fas fa-save me-2"></i>Save Item
           </button>
@@ -492,9 +495,9 @@
             type="reset"
             class="btn btn-secondary ms-2"
             onclick="resetForm()"
-            onmouseover="this.style.backgroundColor = '#f093fb';"
+            onmouseover="this.style.backgroundColor = '#f093fb'"
             onmouseout="this.style.backgroundColor = ''"
-            onfocus="this.style.backgroundColor = '#f093fb';"
+            onfocus="this.style.backgroundColor = '#f093fb'"
             onblur="this.style.backgroundColor = ''"
           >
             <i class="fas fa-undo me-2"></i>Reset Form
@@ -527,6 +530,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+      // let baseUrl = "http://localhost:8000";
+      let baseUrl = window.location.origin;
       const API_URL = "/keyboardApp/api/admin/items/";
       let originalItemData = null;
       const logoutButton = document.getElementById("logoutButton");
@@ -543,8 +548,8 @@
           if (result.isConfirmed) {
             try {
               const logoutResp = await fetch(
-                "http://127.0.0.1:8000/api/keyboardApp/auth/logout",
-                { credentials: "same-origin" }
+                `${baseUrl}/api/keyboardApp/auth/logout`,
+                { credentials: "include" },
               );
 
               if (!logoutResp.ok) throw new Error("Failed to log out");
@@ -701,23 +706,23 @@
           const formData = new FormData();
           formData.append(
             "item_name",
-            document.getElementById("itemName").value
+            document.getElementById("itemName").value,
           );
           formData.append(
             "item_description",
-            document.getElementById("itemDescription").value
+            document.getElementById("itemDescription").value,
           );
           formData.append(
             "item_key_color",
-            document.getElementById("itemColor").value
+            document.getElementById("itemColor").value,
           );
           formData.append(
             "item_brand",
-            document.getElementById("itemBrand").value
+            document.getElementById("itemBrand").value,
           );
           formData.append(
             "item_price",
-            document.getElementById("itemPrice").value
+            document.getElementById("itemPrice").value,
           );
           const image = document.getElementById("itemImage").files[0];
           if (image) formData.append("item_image", image);

@@ -31,24 +31,41 @@ class User_info(models.Model):
 class Store_item(models.Model):
     item_id     = models.AutoField(primary_key=True)
     item_name   = models.CharField(max_length=50, unique=True,default="N/A")
-    item_image = models.ImageField(upload_to="keyboardApp/static/img/keyboardImg/", null=True, blank=True)
+    # item_image = models.ImageField(upload_to="keyboardApp/static/img/keyboardImg/", null=True, blank=True)
+    item_image = models.ImageField(
+    upload_to="keyboardImg/",
+    null=True,
+    blank=True)
     item_description = models.CharField(max_length=50, default="N/A")
     item_key_color = models.CharField(max_length=50, default="N/A")
     item_price  = models.DecimalField(max_digits=10, decimal_places=2)
     item_brand = models.CharField(max_length=50, default="N/A")
 
+    # def tojson(self):
+    #     expected_filename = f"keyboard{self.item_id}.png"
+
+    #     return {
+    #         "item_id": int(self.item_id),
+    #         "item_name": str(self.item_name),
+    #         "item_image": f'src="/static/img/keyboardImg/{expected_filename}"',
+    #         "item_description": str(self.item_description),
+    #         "item_key_color": str(self.item_key_color),
+    #         "item_price": float(self.item_price),
+    #         "item_brand": str(self.item_brand),
+    # }
     def tojson(self):
-        expected_filename = f"keyboard{self.item_id}.png"
+        filename = self.item_image.name.split("/")[-1] if self.item_image else ""
 
         return {
-            "item_id": int(self.item_id),
-            "item_name": str(self.item_name),
-            "item_image": f'src="/static/img/keyboardImg/{expected_filename}"',
-            "item_description": str(self.item_description),
-            "item_key_color": str(self.item_key_color),
+            "item_id": self.item_id,
+            "item_name": self.item_name,
+            "item_image": self.item_image.url if self.item_image else None,
+            # "item_image": f"/static/img/keyboardImg/{filename}" if filename else None,
+            "item_description": self.item_description,
+            "item_key_color": self.item_key_color,
             "item_price": float(self.item_price),
-            "item_brand": str(self.item_brand),
-    }
+            "item_brand": self.item_brand,
+        }
 
 class Transaction(models.Model):
     transaction_id         = models.AutoField(primary_key=True)

@@ -92,7 +92,7 @@ def auth_signUp(request: HttpRequest):
     try:
         with transaction.atomic():
             with connections["keyboardAppDB"].cursor() as con:
-                con.execute("INSERT INTO keyboardApp_user_info (user_name, user_nickname, user_password, user_balance, user_role) VALUES (%s, %s, %s, 0.00, %s)", [req_data["username"], req_data["nickname"], req_data["password"], "user"])
+                con.execute('INSERT INTO "keyboardApp_user_info" (user_name, user_nickname, user_password, user_balance, user_role) VALUES (%s, %s, %s, 0.00, %s)', [req_data["username"], req_data["nickname"], req_data["password"], "user"])
                 if con.rowcount != 1:
                     raise Exception("unexpected row affect on insert user")
     except Exception as e:

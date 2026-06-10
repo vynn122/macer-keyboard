@@ -13,7 +13,7 @@ const getCSRFToken = () => {
 const toggleCheckoutDialog = (flag) => {
   // open the dialog
   let checkoutDialogEle = document.getElementById(
-    "checkout-dialog-main-con-id"
+    "checkout-dialog-main-con-id",
   );
   let cartIconHover = document.getElementById("cart-hover-con-id");
   if (flag) {
@@ -26,10 +26,10 @@ const toggleCheckoutDialog = (flag) => {
 
       if (e.target === e.currentTarget) {
         let infoWrapperEle = document.getElementById(
-          "checkout-dialog-your-info-wrapper-id"
+          "checkout-dialog-your-info-wrapper-id",
         );
         let cartWrapperEle = document.getElementById(
-          "checkout-dialog-cart-content-id"
+          "checkout-dialog-cart-content-id",
         );
         checkoutDialogEle.style.display = "none";
         cartIconHover.style.display = "none";
@@ -107,7 +107,7 @@ const handleItemData = async (brand) => {
   let brandImgContainerEle = document.getElementById("logo-img-con-id");
   try {
     const itemDataResp = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/retrieve_item_with_brand",
+      `${baseUrl}/api/keyboardApp/retrieve_item_with_brand`,
       {
         method: "POST",
         headers: {
@@ -117,7 +117,7 @@ const handleItemData = async (brand) => {
         body: JSON.stringify({
           brandName: brand,
         }),
-      }
+      },
     );
     queriedData = await itemDataResp.json();
     //console.log(dynamicBoxHTMLEle)
@@ -133,6 +133,16 @@ const handleItemData = async (brand) => {
       return;
     }
 
+    // <img
+    //                                 class="keyboard-pic"
+    //                                 src="${
+    //                                   staticImg +
+    //                                   "keyboardImg/" +
+    //                                   ("keyboard" + element.item_id)
+    //                                 }.png"
+    //                                 alt="${brand + "img"}"
+    //                             />
+
     let dynamicBoxHTMLEle = queriedData.item_data
       .map(
         (element) => `
@@ -143,15 +153,12 @@ const handleItemData = async (brand) => {
                         }">
                             <ul class="box-left-con">
                                 <div class="shape-in-Grid">
-                                    <img
-                                        class="keyboard-pic"
-                                        src="${
-                                          staticImg +
-                                          "keyboardImg/" +
-                                          ("keyboard" + element.item_id)
-                                        }.png"
-                                        alt="${brand + "img"}"
-                                    />
+                                  <img
+                                      class="keyboard-pic"
+                                      src="${element.item_image || ""}"
+                                      alt="${element.item_name}"
+                                  />
+                                                                  
                                 </div>
                                 <div class="detail-container">
                                     <h2 class="series-one-x-kuromi">
@@ -242,7 +249,7 @@ const handleItemData = async (brand) => {
                             </ul>
                         </div>
                     </li>
-                     `
+                     `,
       )
       .join("");
     mainBoxContainerEle.innerHTML = dynamicBoxHTMLEle;
@@ -263,7 +270,7 @@ const handleCartCheckout = async () => {
   // let discountFlag = alert('Any discount coupon? Please insert code below')
   try {
     let fetchUserResp = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/auth/validation"
+      `${baseUrl}/api/keyboardApp/auth/validation`,
     );
     if (!fetchUserResp.ok || fetchUserResp.status !== 200) {
       // throw new Error(
@@ -305,7 +312,7 @@ const handleCartCheckout = async () => {
   if (userDiscountInput) {
     try {
       let queriedResp = await fetch(
-        "http://127.0.0.1:8000/api/keyboardApp/retrieve-discount-code",
+        `${baseUrl}/api/keyboardApp/retrieve-discount-code`,
         {
           method: "POST",
           headers: {
@@ -314,7 +321,7 @@ const handleCartCheckout = async () => {
           },
           body: JSON.stringify({ discountCode: userDiscountInput }),
           credentials: "same-origin",
-        }
+        },
       );
       if (!queriedResp.ok || queriedResp.status !== 200) {
         await Swal.fire({
@@ -343,8 +350,8 @@ const handleCartCheckout = async () => {
   try {
     userInfo = await handleQueryData();
     const itemDataResp = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/retrieve-item-data",
-      //  ### NOTE_AL_BRO: change this route to access all brand before "http://127.0.0.1:8000/api/keyboardApp/retrieve_item_with_brand"
+      `${baseUrl}/api/keyboardApp/retrieve-item-data`,
+      //  ### NOTE_AL_BRO: change this route to access all brand before `${baseUrl}/api/keyboardApp/retrieve_item_with_brand`
 
       {
         method: "POST",
@@ -355,7 +362,7 @@ const handleCartCheckout = async () => {
         // body: JSON.stringify({
         //   // brandName: "alpha",
         // }),
-      }
+      },
     );
     queriedData = await itemDataResp.json();
     console.log("Cart here:");
@@ -383,7 +390,7 @@ const handleCartCheckout = async () => {
       (element) => `<ul class="checkout-dialog-cart-element" >
                             <li>${element[0]}</li>
                             <li>${element[1]}</li>
-                        </ul>`
+                        </ul>`,
     )
     .join("");
   cartInfoEle.innerHTML = dynamicCartInfo;
@@ -391,10 +398,10 @@ const handleCartCheckout = async () => {
   // query user balance
   try {
     let queryBalance = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/retrieve-user-balance",
+      `${baseUrl}/api/keyboardApp/retrieve-user-balance`,
       {
         method: "GET",
-      }
+      },
     );
     let userBalance = await queryBalance.json();
     console.log(userBalance.item_data[0]);
@@ -406,10 +413,10 @@ const handleCartCheckout = async () => {
   }
 
   let transactionInfoEle = document.getElementById(
-    "checkout-dialog-transaction-wrapper-id"
+    "checkout-dialog-transaction-wrapper-id",
   );
   let yourInfoEle = document.getElementById(
-    "checkout-dialog-your-info-wrapper-id"
+    "checkout-dialog-your-info-wrapper-id",
   );
 
   let dynamicInfoEle = checkoutInfoDetail
@@ -421,7 +428,7 @@ const handleCartCheckout = async () => {
                                 <li>
                                     <p>${element[1]}</p>
                                 </li>
-                            </ul>`
+                            </ul>`,
     )
     .join("");
 
@@ -434,7 +441,7 @@ const handleCartCheckout = async () => {
                                 <li>
                                     <p>${element[1]}</p>
                                 </li>
-                            </ul>`
+                            </ul>`,
     )
     .join("");
 
@@ -448,7 +455,7 @@ const handleTransaction = async () => {
     console.log("HERE I'M ABOUT TO SEND TO TRANSACTION");
     console.log(cartArr);
     let transactionResp = await fetch(
-      "http://127.0.0.1:8000/api/keyboardApp/perform-transaction",
+      `${baseUrl}/api/keyboardApp/perform-transaction`,
       {
         method: "POST",
         headers: {
@@ -460,7 +467,7 @@ const handleTransaction = async () => {
           item_price: item_price,
         }),
         credentials: "same-origin",
-      }
+      },
     );
     let data = await transactionResp.json();
     if (transactionResp.status != 200) {
@@ -520,7 +527,7 @@ const clearItem = () => {
   cartCounterEle.innerText = cartArr.length;
   // /for cartWrapperEle
   let cartWrapperEle = document.getElementById(
-    "checkout-dialog-cart-content-id"
+    "checkout-dialog-cart-content-id",
   );
   cartWrapperEle.innerHTML = "";
   /// end for cartWrapperEle
@@ -534,7 +541,7 @@ const clearItem = () => {
   checkoutTransactionDetial.push(["Total Price:", "0 USD"]);
   checkoutTransactionDetial.push(["", "0 KHR"]);
   let transactionInfoEle = document.getElementById(
-    "checkout-dialog-transaction-wrapper-id"
+    "checkout-dialog-transaction-wrapper-id",
   );
   transactionInfoEle.innerHTML = checkoutTransactionDetial
     .map(
@@ -545,7 +552,7 @@ const clearItem = () => {
                                 <li>
                                     <p>${element[1]}</p>
                                 </li>
-                            </ul>`
+                            </ul>`,
     )
     .join("");
 };

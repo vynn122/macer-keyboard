@@ -1,5 +1,5 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -16,6 +16,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+      // let baseUrl = "http://localhost:8000";
+      let baseUrl = window.location.origin;
       console.log("JS is done");
       function getCSRFToken() {
         return document.querySelector("[name=csrfmiddlewaretoken]").value;
@@ -23,10 +25,10 @@
 
       async function userAuth() {
         let usernameInputElement = document.getElementById(
-          "userinput-username-id"
+          "userinput-username-id",
         );
         let userpasswordInputElement = document.getElementById(
-          "userinput-password-id"
+          "userinput-password-id",
         );
         console.log();
         console.log("TEST");
@@ -47,20 +49,17 @@
           return;
         }
         try {
-          let resp = await fetch(
-            "http://127.0.0.1:8000/api/keyboardApp/auth/login",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken(),
-              },
-              body: JSON.stringify({
-                username: usernameInputElement.value,
-                password: userpasswordInputElement.value,
-              }),
-            }
-          );
+          let resp = await fetch(`${baseUrl}/api/keyboardApp/auth/login`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": getCSRFToken(),
+            },
+            body: JSON.stringify({
+              username: usernameInputElement.value,
+              password: userpasswordInputElement.value,
+            }),
+          });
 
           let data = await resp.json();
           if (!resp.ok) {
@@ -89,7 +88,7 @@
           //   window.location.href = "/keyboardApp/home";
         } catch (err) {
           alert(
-            "Something went wrong, failed to validate your crediential, Please try again"
+            "Something went wrong, failed to validate your crediential, Please try again",
           );
           console.log(err);
         }

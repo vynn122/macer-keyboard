@@ -21,4 +21,6 @@ urlpatterns=[
     path('shop/checkout', views.checkout_page),
     path('history', views.history_page),
     path('forbidden', views.forbidden_430_view, name='forbidden'),
-] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+]
+urlpatterns += static(settings.MEDIA_URL,
+                      document_root=settings.MEDIA_ROOT)

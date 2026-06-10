@@ -1,0 +1,22 @@
+# pip install python-dotenv
+# pip install cryptography
+# pip install PyJWT
+# pip install djangorestframework
+# pip install Pillow
+
+
+# Django==5.1.4
+# psycopg2-binary
+# gunicorn
+python-dotenv
+cryptography
+PyJWT
+djangorestframework
+Pillow
+
+Django==5.1.4
+psycopg2-binary
+gunicorn
+django-cors-headers
+
+whitenoise

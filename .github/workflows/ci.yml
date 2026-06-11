@@ -34,3 +34,7 @@ jobs:
       - name: Run Django Checks
         run: |
           python manage.py check
+
+      - name: Run Unit Tests
+        run: |
+          python manage.py test

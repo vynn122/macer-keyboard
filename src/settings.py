@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import cloudinary
+import sys
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -106,6 +107,11 @@ DATABASES = {
     }
 }
 
+if 'test' in sys.argv:
+    DATABASES['keyboardAppDB'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'test_db.sqlite3',
+    }
 
 
 

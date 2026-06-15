@@ -5,6 +5,7 @@ let cartRenderArr = [];
 let queryParameter = new URLSearchParams(window.location.search);
 let item_price = 0;
 let CurrentUser = "";
+const baseUrl = window.location.origin;
 const getCSRFToken = () => {
   return document.querySelector("[name=csrfmiddlewaretoken]").value;
 };
@@ -110,6 +111,7 @@ const handleItemData = async (brand) => {
       `${baseUrl}/api/keyboardApp/retrieve_item_with_brand`,
       {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": getCSRFToken(),

@@ -32,6 +32,7 @@ const handleSignup = async () => {
     console.log(userNameTem);
     let signUpResp = await fetch(`${baseUrl}/api/keyboardApp/auth/signup`, {
       method: "POST",
+      credentials: "include",
 
       headers: {
         "Content-Type": "application/json",

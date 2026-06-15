@@ -30,22 +30,19 @@ const handleSignup = async () => {
   }
   try {
     console.log(userNameTem);
-    let signUpResp = await fetch(
-      "http://3.25.246.176:8000/api/keyboardApp/auth/signup",
-      {
-        method: "POST",
+    let signUpResp = await fetch(`${baseUrl}/api/keyboardApp/auth/signup`, {
+      method: "POST",
 
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken(),
-        },
-        body: JSON.stringify({
-          username: userNameTem,
-          nickname: nickNameTem,
-          password: passwordTem,
-        }),
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken(),
       },
-    );
+      body: JSON.stringify({
+        username: userNameTem,
+        nickname: nickNameTem,
+        password: passwordTem,
+      }),
+    });
     if (signUpResp.ok && signUpResp.status !== 200) {
       throw new Error("unexpected response status");
     }

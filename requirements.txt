@@ -16,8 +16,8 @@ Pillow
 
 Django==5.1.4
 psycopg2-binary
-gunicorn
 django-cors-headers
+gunicorn==23.0.0
 
 whitenoise
 cloudinary

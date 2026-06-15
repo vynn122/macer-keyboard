@@ -71,7 +71,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/macer
-
             docker pull vynnn/macer-keyboard:latest
-
             docker compose up -d --force-recreate web

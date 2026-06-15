@@ -30,10 +30,10 @@ SECRET_KEY = 'django-insecure--%hq+oo&&1neciwqtk+vzzj&itaed&*g_apjr43k_nzq!ptz$)
 DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = [
-    "http://3.25.246.176",
-    "http://3.25.246.176:8000",
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://3.25.246.176",
+#     "http://3.25.246.176:8000",
+# ]
 
 # Database Router
 DATABASE_ROUTERS = ["src.db_router.Router_db"]

@@ -1,6 +1,7 @@
 // let usernameInput = document.getElementById('username-input-id')
 // let nicknameInput = document.getElementById('nickname-input-id')
 // let passwordInput = document.getElementById('password-input-id')
+const baseUrl = window.location.origin;
 const getCSRFToken = () => {
   return document.querySelector("[name=csrfmiddlewaretoken]").value;
 };

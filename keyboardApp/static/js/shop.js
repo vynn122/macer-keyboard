@@ -5,7 +5,7 @@ let cartRenderArr = [];
 let queryParameter = new URLSearchParams(window.location.search);
 let item_price = 0;
 let CurrentUser = "";
-const baseUrl = window.location.origin;
+// const baseUrl = window.location.origin;
 const getCSRFToken = () => {
   return document.querySelector("[name=csrfmiddlewaretoken]").value;
 };

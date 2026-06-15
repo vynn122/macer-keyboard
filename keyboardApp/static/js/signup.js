@@ -1,7 +1,6 @@
 // let usernameInput = document.getElementById('username-input-id')
 // let nicknameInput = document.getElementById('nickname-input-id')
 // let passwordInput = document.getElementById('password-input-id')
-// const baseUrl = window.location.origin;
 const getCSRFToken = () => {
   return document.querySelector("[name=csrfmiddlewaretoken]").value;
 };
@@ -32,7 +31,6 @@ const handleSignup = async () => {
     console.log(userNameTem);
     let signUpResp = await fetch(`${baseUrl}/api/keyboardApp/auth/signup`, {
       method: "POST",
-      credentials: "include",
 
       headers: {
         "Content-Type": "application/json",

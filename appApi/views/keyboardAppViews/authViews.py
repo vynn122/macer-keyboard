@@ -88,16 +88,39 @@ def auth_signUp(request: HttpRequest):
     req_data = json.loads(request.body)
     if not req_data["username"].strip() or not req_data["nickname"].strip() or not req_data["password"].strip():
         return JsonResponse({"Error_Message": "failed to validate the request, Please make sure to request with all required field"}, status=400)
-    
     try:
-        with transaction.atomic():
-            with connections["keyboardAppDB"].cursor() as con:
-                con.execute('INSERT INTO "keyboardApp_user_info" (user_name, user_nickname, user_password, user_balance, user_role) VALUES (%s, %s, %s, 0.00, %s)', [req_data["username"], req_data["nickname"], req_data["password"], "user"])
-                if con.rowcount != 1:
-                    raise Exception("unexpected row affect on insert user")
+        with transaction.atomic(using="keyboardAppDB"):
+         with connections["keyboardAppDB"].cursor() as con:
+            con.execute(
+                'INSERT INTO "keyboardApp_user_info" '
+                '(user_name, user_nickname, user_password, user_balance, user_role) '
+                'VALUES (%s, %s, %s, 0.00, %s)',
+                [
+                    req_data["username"],
+                    req_data["nickname"],
+                    req_data["password"],
+                    "user"
+                ]
+            )
+
+            print("ROWCOUNT =", con.rowcount)
+            print("USERNAME =", req_data["username"])
+
     except Exception as e:
-        print(e)
-        return JsonResponse({"Error_Message": "failed to insert new user: DUE " + str(e)}, status=500)
+        print("SIGNUP ERROR =", e)
+        return JsonResponse(
+            {"Error_Message": str(e)},
+            status=500
+        )
+    # try:
+    #     with transaction.atomic():
+    #         with connections["keyboardAppDB"].cursor() as con:
+    #             con.execute('INSERT INTO "keyboardApp_user_info" (user_name, user_nickname, user_password, user_balance, user_role) VALUES (%s, %s, %s, 0.00, %s)', [req_data["username"], req_data["nickname"], req_data["password"], "user"])
+    #             if con.rowcount != 1:
+    #                 raise Exception("unexpected row affect on insert user")
+    # except Exception as e:
+    #     print(e)
+    #     return JsonResponse({"Error_Message": "failed to insert new user: DUE " + str(e)}, status=500)
     
     return JsonResponse({"Message": "User has signed up"}, status=200)
 

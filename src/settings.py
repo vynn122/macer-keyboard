@@ -31,9 +31,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = [
-    # "http://3.25.246.176",
-    # "http://3.25.246.176:8000",
-    "*"
+    "http://3.25.246.176",
+    "http://3.25.246.176:8000",
+    "http://localhost",
+    "http://localhost:8000",
 ]
 
 # Database Router

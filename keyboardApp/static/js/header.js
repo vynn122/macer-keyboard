@@ -8,7 +8,8 @@ let dialogSignupBtnEle = document.getElementById("dialog-signup-btn-id");
 let dialogLogoutBtnEle = document.getElementById("dialog-logout-btn-id");
 let userNicknameTextEle = document.getElementById("usernickname-text-id");
 // let baseUrl = "http://localhost:8000";
-let baseUrl = window.location.origin;
+// let baseUrl = window.location.origin;
+let baseUrl = "http://3.25.246.176:8000";
 
 switch (window.location.pathname) {
   case "/keyboardApp/home":

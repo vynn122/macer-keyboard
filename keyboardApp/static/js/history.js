@@ -1,5 +1,6 @@
 // api: "http://127.0.0.1:8000/api/keyboardApp/retrieve-transaction"
 
+let baseUrl = "http://3.25.246.176:8000";
 const getCSRFToken = () => {
   return document.querySelector("[name=csrfmiddlewaretoken]").value;
 };

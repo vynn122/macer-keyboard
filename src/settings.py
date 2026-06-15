@@ -38,7 +38,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Database Router
-DATABASE_ROUTERS = ["src.db_router.Router_db"]
+# DATABASE_ROUTERS = ["src.db_router.Router_db"]
 
 
 # Application definition
@@ -91,41 +91,59 @@ WSGI_APPLICATION = 'src.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     },
+#     # 'default': {
+#     #     'ENGINE': 'django.db.backends.postgresql',
+#     #     'NAME': os.getenv('POSTGRES_DB'),
+#     #     'USER': os.getenv('POSTGRES_USER'),
+#     #     'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#     #     'HOST': 'db',
+#     #     'PORT': os.getenv('POSTGRES_PORT', '5432'),
+#     # },
+#     'lessonAppDB': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'lessonAppDB.sqlite3'
+#     },
+#     'keyboardAppDB': {
+#         # 'ENGINE': 'django.db.backends.sqlite3',
+#         # 'NAME': BASE_DIR / 'keyboardAppDB.sqlite3'
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB'),
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#         'HOST': 'db',
+#         'PORT': os.getenv('POSTGRES_PORT', '5432'),
+
+#     }
+# }
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # },
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'NAME': os.getenv('POSTGRES_DB', 'macer'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
         'HOST': 'db',
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
-    },
-    'lessonAppDB': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'lessonAppDB.sqlite3'
-    },
-    'keyboardAppDB': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'keyboardAppDB.sqlite3'
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': 'db',
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
-
     }
 }
 
+# Use SQLite only during tests
 if 'test' in sys.argv:
-    DATABASES['keyboardAppDB'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'test_db.sqlite3',
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
     }
+# if 'test' in sys.argv:
+#     DATABASES['keyboardAppDB'] = {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'test_db.sqlite3',
+#     }
 
 
 

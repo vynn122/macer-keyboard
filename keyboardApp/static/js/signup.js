@@ -29,7 +29,7 @@ const handleSignup = async () => {
   }
   try {
     console.log(userNameTem);
-    let signUpResp = await fetch(`${baseUrl}/api/keyboardApp/auth/signup`, {
+    let signUpResp = await fetch(`/api/keyboardApp/auth/signup`, {
       method: "POST",
 
       headers: {

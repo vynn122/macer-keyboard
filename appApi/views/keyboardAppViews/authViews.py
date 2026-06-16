@@ -14,10 +14,12 @@ import jwt
 from dotenv import load_dotenv
 from django.views.decorators.http import require_GET
 from functools import wraps
+from django.views.decorators.csrf import csrf_exempt
 
 
 
 
+@csrf_exempt
 @require_http_methods(["GET", "POST", "OPTIONS"])
 @Crediential_validate_middleware
 def auth_user(request: HttpRequest):
@@ -55,7 +57,7 @@ def auth_user(request: HttpRequest):
         response.set_cookie("auth_token", jwToken, httponly=True, samesite="Lax", max_age=3600)
         
     except Exception as err:
-        return JsonResponse({"Message": "Failed to prepare the access token", "ErrorKey": err}, status=500)
+        return JsonResponse({"Message": "Failed to prepare the access token", "ErrorKey": str(err)}, status=500)
 
     return response
 
@@ -73,7 +75,7 @@ def auth_validate_user(request: HttpRequest):
             algorithms=["RS256"]
             )
     except Exception as err:
-        return JsonResponse({"Error_Message": "cookie not recongise", "Dev_Message": err})
+        return JsonResponse({"Error_Message": "cookie not recongise", "Dev_Message": str(err)})
     return JsonResponse({"Data": token_payload})
 
 
@@ -86,6 +88,7 @@ from django.http import JsonResponse, HttpRequest
 from django.views.decorators.http import require_http_methods
 import json
 
+@csrf_exempt
 @require_http_methods(["POST", "OPTIONS"])
 def auth_signUp(request: HttpRequest):
     req_data = json.loads(request.body)

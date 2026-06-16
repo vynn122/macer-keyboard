@@ -42,6 +42,7 @@ const handleSignup = async () => {
     });
 
     const data = await signUpResp.json();
+    console.log("========Signup Response Data:========", data);
 
     // Handle non-success responses
     if (!signUpResp.ok) {

@@ -82,15 +82,37 @@ def auth_logout(request):
     logout_response.delete_cookie("auth_token")
     return logout_response
 
+from django.http import JsonResponse, HttpRequest
+from django.views.decorators.http import require_http_methods
+import json
+
 @require_http_methods(["POST", "OPTIONS"])
 def auth_signUp(request: HttpRequest):
     req_data = json.loads(request.body)
 
+    username = req_data.get("username", "").strip()
+    nickname = req_data.get("nickname", "").strip()
+    password = req_data.get("password", "").strip()
+
+    # Validate input
+    if not username or not nickname or not password:
+        return JsonResponse(
+            {"Error_Message": "All fields are required"},
+            status=400
+        )
+
     try:
+        # Check if username already exists
+        if User_info.objects.filter(user_name=username).exists():
+            return JsonResponse(
+                {"Error_Message": "Username already exists"},
+                status=409  # Conflict
+            )
+
         user = User_info.objects.create(
-            user_name=req_data["username"],
-            user_nickname=req_data["nickname"],
-            user_password=req_data["password"],
+            user_name=username,
+            user_nickname=nickname,
+            user_password=password,
             user_balance=0,
             user_role="user",
         )
@@ -99,7 +121,7 @@ def auth_signUp(request: HttpRequest):
 
         return JsonResponse(
             {"Message": "User has signed up"},
-            status=200
+            status=201
         )
 
     except Exception as e:
@@ -108,6 +130,33 @@ def auth_signUp(request: HttpRequest):
             {"Error_Message": str(e)},
             status=500
         )
+
+# @require_http_methods(["POST", "OPTIONS"])
+# def auth_signUp(request: HttpRequest):
+#     req_data = json.loads(request.body)
+
+#     try:
+#         user = User_info.objects.create(
+#             user_name=req_data["username"],
+#             user_nickname=req_data["nickname"],
+#             user_password=req_data["password"],
+#             user_balance=0,
+#             user_role="user",
+#         )
+
+#         print("CREATED USER", user.user_id)
+
+#         return JsonResponse(
+#             {"Message": "User has signed up"},
+#             status=200
+#         )
+
+#     except Exception as e:
+#         print("SIGNUP ERROR:", repr(e))
+#         return JsonResponse(
+#             {"Error_Message": str(e)},
+#             status=500
+#         )
 # @require_http_methods(["POST", "OPTIONS"])
 # def auth_signUp(request: HttpRequest):
 #     req_data = json.loads(request.body)

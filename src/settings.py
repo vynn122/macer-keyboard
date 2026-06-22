@@ -29,14 +29,25 @@ SECRET_KEY = 'django-insecure--%hq+oo&&1neciwqtk+vzzj&itaed&*g_apjr43k_nzq!ptz$)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = [
-    "http://52.62.206.27",
-    "http://5.62.206.27:8000",
-    "http://localhost",
-    "http://localhost:8000",
+# ALLOWED_HOSTS = ["*"]
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://52.62.206.27",
+#     "http://5.62.206.27:8000",
+#     "http://localhost",
+#     "http://localhost:8000",
+# ]
+
+ALLOWED_HOSTS = [
+    "macer.theavin.xyz",
+    "52.62.206.27",
+    "localhost",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://macer.theavin.xyz",
+    "http://52.62.206.27",
+    "http://localhost",
+]
 # Database Router
 DATABASE_ROUTERS = ["src.db_router.Router_db"]
 

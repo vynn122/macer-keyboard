@@ -17,30 +17,42 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000  0%, #764ba2 100%);
+  background: linear-gradient(135deg, #000000 0%, #764ba2 100%);
   position: relative;
   overflow: hidden;
 }
 
 /* Animated background elements */
 body::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 118, 117, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
+  background:
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(120, 119, 198, 0.3) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255, 118, 117, 0.3) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(120, 119, 198, 0.2) 0%,
+      transparent 50%
+    );
   animation: float 20s ease-in-out infinite;
   z-index: -1;
 }
 
 /* Floating keyboard keys animation */
 body::after {
-  content: 'QWERTY ASDFGH ZXCVBN';
+  content: "QWERTY ASDFGH ZXCVBN";
   position: absolute;
   top: 0;
   left: 0;
@@ -48,7 +60,7 @@ body::after {
   height: 100%;
   color: rgba(255, 255, 255, 0.05);
   font-size: 120px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -59,14 +71,28 @@ body::after {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-30px) rotate(1deg); }
-  66% { transform: translateY(-20px) rotate(-1deg); }
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-30px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-20px) rotate(-1deg);
+  }
 }
 
 @keyframes breathe {
-  0%, 100% { opacity: 0.05; transform: scale(1); }
-  50% { opacity: 0.1; transform: scale(1.05); }
+  0%,
+  100% {
+    opacity: 0.05;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.1;
+    transform: scale(1.05);
+  }
 }
 
 /* Back button styling */
@@ -93,7 +119,7 @@ body::after {
 }
 
 .login-back-btn::before {
-  content: '←';
+  content: "←";
   font-size: 18px;
 }
 
@@ -111,7 +137,7 @@ body::after {
   width: 420px;
   padding: 40px 45px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 
+  box-shadow:
     0 25px 50px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   position: relative;
@@ -120,7 +146,7 @@ body::after {
 }
 
 .wrapper::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -142,15 +168,22 @@ body::after {
 }
 
 @keyframes shimmer {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Form styling */
 form {
   width: 100%;
 }
-
+.sing_up_text {
+  color: rgb(164, 60, 255);
+}
 .wrapper .login {
   font-family: "Montserrat", sans-serif;
   color: white;
@@ -162,7 +195,7 @@ form {
 }
 
 .wrapper .login::after {
-  content: '⌨️';
+  content: "⌨️";
   display: block;
   font-size: 24px;
   margin-top: 5px;
@@ -170,9 +203,19 @@ form {
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
 }
 
 /* Input styling */
@@ -182,13 +225,18 @@ form {
 }
 
 .input-box::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   border-radius: 25px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -222,7 +270,7 @@ input::placeholder {
 input:focus {
   border-color: rgba(255, 255, 255, 0.5);
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: 
+  box-shadow:
     0 0 0 3px rgba(255, 255, 255, 0.1),
     inset 0 2px 10px rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
@@ -267,7 +315,7 @@ input:hover {
 }
 
 .remember-forgot a::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -303,13 +351,18 @@ input:hover {
 }
 
 .btn::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -355,12 +408,12 @@ input:hover {
 
 /* Keyboard-themed decorative elements */
 .wrapper::after {
-  content: '{ CTRL + ALT + AWESOME }';
+  content: "{ CTRL + ALT + AWESOME }";
   position: absolute;
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 10px;
   color: rgba(255, 255, 255, 0.3);
   font-weight: 400;
@@ -373,28 +426,28 @@ input:hover {
     padding: 60px 70px;
     border-radius: 25px;
   }
-  
+
   .wrapper .login {
     font-size: 42px;
     margin-bottom: 15px;
   }
-  
+
   .wrapper .login::after {
     font-size: 32px;
     margin-top: 8px;
   }
-  
+
   .input-box {
     margin: 35px 0;
   }
-  
+
   input {
     height: 60px;
     font-size: 18px;
     padding: 20px 30px;
     border-radius: 30px;
   }
-  
+
   .btn {
     height: 60px;
     font-size: 18px;
@@ -402,38 +455,38 @@ input:hover {
     border-radius: 30px;
     letter-spacing: 1.5px;
   }
-  
+
   .remember-forgot {
     font-size: 16px;
     margin: 25px 0;
   }
-  
+
   .remember-forgot input[type="checkbox"] {
     width: 20px;
     height: 20px;
     margin-right: 10px;
   }
-  
+
   .do-not-have-acc {
     font-size: 16px;
     margin-bottom: 10px;
   }
-  
+
   .signup {
     font-size: 18px;
   }
-  
+
   .wrapper::after {
     font-size: 12px;
     bottom: 15px;
   }
-  
+
   .login-back-btn {
     padding: 15px 25px;
     font-size: 16px;
     border-radius: 30px;
   }
-  
+
   body::after {
     font-size: 140px;
   }
@@ -444,25 +497,25 @@ input:hover {
     width: 650px;
     padding: 80px 90px;
   }
-  
+
   .wrapper .login {
     font-size: 48px;
   }
-  
+
   .wrapper .login::after {
     font-size: 36px;
   }
-  
+
   input {
     height: 70px;
     font-size: 20px;
   }
-  
+
   .btn {
     height: 70px;
     font-size: 20px;
   }
-  
+
   body::after {
     font-size: 160px;
   }
@@ -475,29 +528,29 @@ input:hover {
     padding: 30px 25px;
     margin: 20px;
   }
-  
+
   .login {
     font-size: 26px !important;
   }
-  
+
   .input-box {
     margin: 20px 0;
   }
-  
+
   input {
     height: 45px;
     font-size: 15px;
   }
-  
+
   .btn {
     height: 45px;
     font-size: 15px;
   }
-  
+
   .register-link {
     font-size: 12px;
   }
-  
+
   .remember-forgot {
     font-size: 12px;
     flex-direction: column;
@@ -537,7 +590,7 @@ input:hover {
 }
 
 .btn.loading::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -551,7 +604,9 @@ input:hover {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Accessibility improvements */
@@ -566,7 +621,7 @@ input:focus,
     background: rgba(0, 0, 0, 0.9);
     border: 2px solid white;
   }
-  
+
   input {
     background: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.5);
